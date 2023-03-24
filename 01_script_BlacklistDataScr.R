@@ -1,7 +1,7 @@
 install.packages("stringdist")
 install.packages("RColorBrewer")
-library(stringdist)
 
+library(stringdist)
 library(tidyverse)
 library(rvest)
 library(data.table)
@@ -413,13 +413,16 @@ colnames(iso2_valstis_LV) <- new_colnames
 View(iso2_valstis_LV)
 
 
+# joining based on alternative column (sqldf package):
+# https://stackoverflow.com/questions/52116379/how-to-merge-data-frames-in-r-using-alternative-columns
+# can be combined with fuzzy match? Maybe easier will be to fill NAs manually if they will be very few.
+
+
+
 # DF FOR GANTT CHART
 
 
-df_gantt <- ter_unik %>% 
-  mutate(BlacklistedFrom = case_when(
-    
-  ))
+
 # will that automatically duplicate rows in case a country starts/ends more than once?
 
 # stringdistmatrix(df1$teritorija)
@@ -449,6 +452,5 @@ df_gantt <- ter_unik %>%
 # in Datacamp about dates and time ymd function?
 # linegraph width the numbers of jurisdictions?
 
-# How about numbering? Ordered factor? Alphabetical order is used anyway, but in Latvian, so better to use ordered factor
 
 # What to regress to? Are there purposes in the EU documents? Ex ante? Researches?
