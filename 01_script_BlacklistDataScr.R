@@ -415,8 +415,9 @@ View(iso2_valstis_LV)
 
 # joining based on alternative column (sqldf package):
 # https://stackoverflow.com/questions/52116379/how-to-merge-data-frames-in-r-using-alternative-columns
-# can be combined with fuzzy match? Maybe easier will be to fill NAs manually if they will be very few.
 
+# can be combined with fuzzy match? Maybe easier will be to fill NAs manually if they will be very few.
+# https://cran.r-project.org/web/packages/fedmatch/vignettes/Fuzzy-matching.html
 
 
 # DF FOR GANTT CHART
