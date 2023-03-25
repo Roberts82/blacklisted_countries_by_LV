@@ -336,6 +336,8 @@ df2 <- ter_unik
 # Starts/Ends on
 # setdiff(x, y) finds all rows in x that aren't in y.
 
+# Create a folder for saved dataframes
+# dir.create("saved_dataframes")
 
 # Save dataframes
 # write.csv(valstis95, file = "saved_dataframes/valstis95.csv")
