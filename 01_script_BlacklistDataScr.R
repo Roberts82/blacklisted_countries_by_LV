@@ -337,6 +337,21 @@ df2 <- ter_unik
 # setdiff(x, y) finds all rows in x that aren't in y.
 
 
+# Save dataframes
+# write.csv(valstis95, file = "dataframes/valstis95.csv")
+# write.csv(valstis97, file = "dataframes/valstis97.csv")
+# write.csv(valstis2001, file = "dataframes/valstis2001.csv")
+# write.csv(valstis2004, file = "dataframes/valstis2004.csv")
+# write.csv(valstis2010, file = "dataframes/valstis2010.csv")
+# write.csv(valstis2013, file = "dataframes/valstis2013.csv")
+# write.csv(valstis2017, file = "dataframes/valstis2017.csv")
+# write.csv(valstis2020, file = "dataframes/valstis2020.csv")
+# write.csv(valstis2022_1, file = "dataframes/valstis2022_1.csv")
+# write.csv(valstis2022_2, file = "dataframes/valstis2022_2.csv")
+# 
+# write.csv(ter_unik, file = "dataframes/ter_unik.csv")
+
+
 
 # * Batch 1
 Starts_01.04.1995 <- valstis95$teritorija
