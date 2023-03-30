@@ -1,11 +1,13 @@
 install.packages("stringdist")
 install.packages("RColorBrewer")
+install.packages("fedmatch")
 
 library(stringdist)
 library(tidyverse)
 library(rvest)
 library(data.table)
 library(RColorBrewer)
+library(fedmatch)
 
 # list of urls used:
 
@@ -351,9 +353,9 @@ df2 <- ter_unik
 # write.csv(valstis2022_1, file = "saved_dataframes/valstis2022_1.csv")
 # write.csv(valstis2022_2, file = "saved_dataframes/valstis2022_2.csv")
 # 
-# write.csv(ter_unik, file = "dataframes/ter_unik.csv")
+# write.csv(ter_unik, file = "saved_dataframes/ter_unik.csv")
 
-
+# write.csv(iso2_valstis_LV, file = "saved_dataframes/iso2_valstis_LV.csv")
 
 # * Batch 1
 Starts_01.04.1995 <- valstis95$teritorija
@@ -435,6 +437,12 @@ View(iso2_valstis_LV)
 
 # can be combined with fuzzy match? Maybe easier will be to fill NAs manually if they will be very few.
 # https://cran.r-project.org/web/packages/fedmatch/vignettes/Fuzzy-matching.html
+# ??fedmatch
+# https://cran.r-project.org/web/packages/fedmatch/vignettes/Intro-to-fedmatch.html
+# https://rdrr.io/cran/fedmatch/man/
+
+
+
 
 
 # DF FOR GANTT CHART
