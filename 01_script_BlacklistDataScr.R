@@ -441,7 +441,36 @@ View(iso2_valstis_LV)
 # https://cran.r-project.org/web/packages/fedmatch/vignettes/Intro-to-fedmatch.html
 # https://rdrr.io/cran/fedmatch/man/
 
+# adding unique keys for fuzzy match
 
+ter_unik_uk <- mutate(ter_unik, "unique_key_1" = seq_len(nrow(ter_unik)))
+
+iso2_valstis_LV_uk <- mutate(iso2_valstis_LV, "unique_key_2" = seq_len(nrow(iso2_valstis_LV)))
+
+merge1 <- merge_plus(data1 = ter_unik_uk,
+                     data2 = iso2_valstis_LV_uk,
+                     by.x = "teritorija",
+                     by.y = "Tradicionālais (īsais) nosaukums",
+                     match_type = "fuzzy",
+                     unique_key_1 = "unique_key_1",
+                     unique_key_2 = "unique_key_2")
+
+print(merge1$matches)
+
+
+merge1_1 <- merge_plus(data1 = ter_unik_uk,
+                     data2 = iso2_valstis_LV_uk,
+                     by.x = "teritorija",
+                     by.y = "Oficiālais (pilnais) nosaukums",
+                     fuzzy_settings = build_fuzzy_settings(maxDist = .25),
+                     match_type = "fuzzy",
+                     unique_key_1 = "unique_key_1",
+                     unique_key_2 = "unique_key_2")
+
+print(merge1_1$matches)
+print(merge1_1$data1_nomatch)
+
+merge_1_1_df <- data.frame(merge1_1$matches)
 
 
 
