@@ -272,68 +272,6 @@ ter_unik <- unique(ter_kop_tab) %>%
 # https://journal.r-project.org/archive/2014-1/loo.pdf The stringdist Package for Approximate String Matching
 
 
-df1 <- ter_unik
-df2 <- ter_unik
-
-# adist(df1$teritorija, df2$teritorija)
-# agrep(df1$teritorija, df2$teritorija, max.distance = 10, value = TRUE)
-# amatch(df1$teritorija, df2$teritorija, maxDist = 10)
-# vec1 <- as.vector(df1)
-# vec2 <- as.vector(df2)
-# amatch(vec1, vec2, maxDist = 10)
-
-# this code seems will not be used in the project (the idea was to classify jurisdictions
-# and find duplicated, however other methods are expected to be more efficient):
-# stringdistmatrix(df1$teritorija, df2$teritorija, useNames = TRUE)
-# p <- stringdistmatrix(df1$teritorija, df2$teritorija, useNames = TRUE) # uses default method "lv"
-# p_osa <- stringdistmatrix(df1$teritorija, df2$teritorija, method = "osa", useNames = TRUE)
-# p_dl <- stringdistmatrix(df1$teritorija, df2$teritorija, method = "dl", useNames = TRUE)
-# p_hamming <- stringdistmatrix(df1$teritorija, df2$teritorija, method = "hamming", useNames = TRUE)
-# p_lcs <- stringdistmatrix(df1$teritorija, df2$teritorija, method = "lcs", useNames = TRUE)
-# p_qgram <- stringdistmatrix(df1$teritorija, df2$teritorija, method = "qgram", useNames = TRUE)
-# p_cosine <- stringdistmatrix(df1$teritorija, df2$teritorija, method = "cosine", useNames = TRUE)
-# p_jaccard <- stringdistmatrix(df1$teritorija, df2$teritorija, method = "jaccard", useNames = TRUE)
-# p_jw <- stringdistmatrix(df1$teritorija, df2$teritorija, method = "jw", useNames = TRUE)
-# p_soundex <- stringdistmatrix(df1$teritorija, df2$teritorija, method = "soundex", useNames = TRUE)
-# 
-# heatmap(p, col = cm.colors(256))
-# heatmap(p_osa, col = cm.colors(256))
-# heatmap(p_dl, col = cm.colors(256))
-# heatmap(p_hamming, col = cm.colors(256))
-# heatmap(p_lcs, col = cm.colors(256))
-# heatmap(p_qgram, col = cm.colors(256))
-# heatmap(p_cosine, col = cm.colors(256))
-# heatmap(p_jaccard, col = cm.colors(256))
-# heatmap(p_jw, col = cm.colors(256)) # this seemes to be the most useful
-# heatmap(p_soundex, col = cm.colors(256))
-# 
-# heatmap(p_jw, col = terrain.colors(256)) # this seemes to be the most useful
-
-
-# now width removed common strings which are not of interest (to see the contrast better in heatmaps)
-
-# txt_to_remove <- c("(Lielbritānijas un Ziemeļīrijas Apvienotā Karaliste)", "Republika")
-
-# df1_rem_str <- as.data.frame(gsub("(Lielbritānijas un Ziemeļīrijas Apvienotā Karaliste)", "", ter_unik$teritorija))
-
-# df1_rem_str <- df1
-# df1_rem_str$teritorija <- unlist(gsub("(Lielbritānijas un Ziemeļīrijas Apvienotā Karaliste)", "", df1_rem_str$teritorija))
-# df1_rem_str$teritorija <- unlist(gsub("Republika", "R.", df1_rem_str$teritorija))
-# df1_rem_str$teritorija <- unlist(gsub("Nīderlandes Karaliste", "NK", df1_rem_str$teritorija))
-
-
-# df2_rem_str <- df1_rem_str
-# 
-# p_rem_jw <- stringdistmatrix(df1_rem_str$teritorija, df2_rem_str$teritorija, method = "jw", useNames = TRUE)
-# 
-# heatmap(p_rem_jw, col = terrain.colors(256)) # this seemes to be the most useful
-# 
-# str(p_jw)
-# str(p_rem_jw)
-# 
-# # seems not the best method used. Can some words be ignored?
-# p1 <- as.data.frame(stringdistmatrix(df1$teritorija, df2$teritorija, useNames = TRUE))
-
 
 # Starts/Ends on
 # setdiff(x, y) finds all rows in x that aren't in y.
@@ -447,18 +385,8 @@ ter_unik_uk <- mutate(ter_unik, "unique_key_1" = seq_len(nrow(ter_unik)))
 
 iso2_valstis_LV_uk <- mutate(iso2_valstis_LV, "unique_key_2" = seq_len(nrow(iso2_valstis_LV)))
 
-merge1 <- merge_plus(data1 = ter_unik_uk,
-                     data2 = iso2_valstis_LV_uk,
-                     by.x = "teritorija",
-                     by.y = "Tradicionālais (īsais) nosaukums",
-                     match_type = "fuzzy",
-                     unique_key_1 = "unique_key_1",
-                     unique_key_2 = "unique_key_2")
 
-print(merge1$matches)
-
-
-merge1_1 <- merge_plus(data1 = ter_unik_uk,
+merged_unique_iso <- merge_plus(data1 = ter_unik_uk,
                      data2 = iso2_valstis_LV_uk,
                      by.x = "teritorija",
                      by.y = "Oficiālais (pilnais) nosaukums",
@@ -467,11 +395,19 @@ merge1_1 <- merge_plus(data1 = ter_unik_uk,
                      unique_key_1 = "unique_key_1",
                      unique_key_2 = "unique_key_2")
 
-print(merge1_1$matches)
-print(merge1_1$data1_nomatch)
+# print(merged_unique_iso$matches)
+# print(merged_unique_iso$data1_nomatch)
 
-merge_1_1_df <- data.frame(merge1_1$matches)
+merged_unique_iso_df <- data.frame(merged_unique_iso$matches)
 
+nonmatch_unique_iso_df <- data.frame(merged_unique_iso$data1_nomatch)
+
+incorrect_match_025_uk1 <- c(11, 12, 4, 40, 77, 48, 49, 55, 92, 74, 138, 99, 103)
+
+# the next steps:
+# 1) exclude incorrect matches from merged_unique_iso_df;
+# 2) eliminate duplicates (or better no to do that until wrangle date in dfs starts/ends?);
+# 3) add to df all the missing matches (by unique_key_2 where possible, and then manually).
 
 
 # DF FOR GANTT CHART
@@ -507,5 +443,7 @@ merge_1_1_df <- data.frame(merge1_1$matches)
 # in Datacamp about dates and time ymd function?
 # linegraph width the numbers of jurisdictions?
 
+# for descriptive statistics and later for regression:
+# classify (cluster) jurisdictions based on different parameters (GDP, distance, continent)
 
 # What to regress to? Are there purposes in the EU documents? Ex ante? Researches?
