@@ -369,6 +369,11 @@ colnames(iso2_valstis_LV) <- new_colnames
 
 View(iso2_valstis_LV)
 
+# removing variables from global environment after using them
+rm(webpage, webpage1, webpage2, webpage3, webpage4, webpage5)
+rm(text, text1, text2, text3, text4)
+rm(url, url1, url2, url3, url4, url5)
+rm(ter_kop_tab)
 
 # joining based on alternative column (sqldf package):
 # https://stackoverflow.com/questions/52116379/how-to-merge-data-frames-in-r-using-alternative-columns
@@ -398,16 +403,38 @@ merged_unique_iso <- merge_plus(data1 = ter_unik_uk,
 # print(merged_unique_iso$matches)
 # print(merged_unique_iso$data1_nomatch)
 
-merged_unique_iso_df <- data.frame(merged_unique_iso$matches)
+merged_unique_iso_df <- data.frame(merged_unique_iso$matches) # save as a df matched jurisdictions
 
-nonmatch_unique_iso_df <- data.frame(merged_unique_iso$data1_nomatch)
+# saving as df nonmatched jur. Later will be used for manual matching
+nonmatch_unique_iso_df <- data.frame(merged_unique_iso$data1_nomatch)  
 
+# looking through merged_unique_iso_df incorrect matched identifies. Will need to be filtered out
+# and later on manually matched
 incorrect_match_025_uk1 <- c(11, 12, 4, 40, 77, 48, 49, 55, 92, 74, 138, 99, 103)
+
+# saving names of incorrectly matched jurisdiction for future manual matching
+incorrect_match_025_uk1_jurnames <- merged_unique_iso_df %>% 
+  filter(unique_key_1 %in% incorrect_match_025_uk1) %>% 
+  select(teritorija)
+
+# filtering out incorrect matches
+merged_unique_iso_df <- merged_unique_iso_df %>%
+  filter(!unique_key_2 %in% incorrect_match_025_uk1)
+
+# countries for manual match
+jurisd_manual <- nonmatch_unique_iso_df %>% 
+  select(teritorija) %>% 
+  rbind(incorrect_match_025_uk1_jurnames)
+
+# next step - mutate/case_when - to add iso_2
+# then - connect with df with official names, and then add missing iso_2 manually. Where no iso_2,
+# than create for the purpose of the project
 
 # the next steps:
 # 1) exclude incorrect matches from merged_unique_iso_df;
 # 2) eliminate duplicates (or better no to do that until wrangle date in dfs starts/ends?);
-# 3) add to df all the missing matches (by unique_key_2 where possible, and then manually).
+# 3) add to df all the missing matches (by unique_key_2 where possible, and then manually);
+# 4) add country codes to start/end dfs (1.joining by jurisdiction, 2. manually to the remaining cases?) 
 
 
 # DF FOR GANTT CHART
