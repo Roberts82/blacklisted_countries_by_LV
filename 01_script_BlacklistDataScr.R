@@ -424,7 +424,23 @@ merged_unique_iso_df <- merged_unique_iso_df %>%
 # countries for manual match
 jurisd_manual <- nonmatch_unique_iso_df %>% 
   select(teritorija) %>% 
-  rbind(incorrect_match_025_uk1_jurnames)
+  rbind(incorrect_match_025_uk1_jurnames) %>% 
+  arrange(teritorija)
+
+Kods..ISO.3166.1. <- c("VI", NA, NA, "GU", "NC", "NC", NA, NA, NA, NA, NA, "MO", NA, NA, "PM", NA, NA, "VU")
+
+jurisd_manual <- mutate(jurisd_manual, Kods..ISO.3166.1., .before = "teritorija")
+
+jurisd_manual <- left_join(jurisd_manual, iso2_valstis_LV_uk, by = c("Kods..ISO.3166.1." = "Kods (ISO-3166-1)"))
+
+
+tax_foundation_tax_rates <- read.csv("https://raw.githubusercontent.com/TaxFoundation/worldwide-corporate-tax-rates/master/final_data/final_data_long.csv")
+
+# from Tax Foundation dataset - additional code:
+# Antilles - AN
+
+# https://www.iso.org/obp/ui/#iso:code:3166:PF - Thaiti
+
 
 # next step - mutate/case_when - to add iso_2
 # then - connect with df with official names, and then add missing iso_2 manually. Where no iso_2,
@@ -471,6 +487,7 @@ jurisd_manual <- nonmatch_unique_iso_df %>%
 # linegraph width the numbers of jurisdictions?
 
 # for descriptive statistics and later for regression:
-# classify (cluster) jurisdictions based on different parameters (GDP, distance, continent)
+# classify (cluster) jurisdictions based on different parameters (GDP, distance, continent, what are jurisdiction known for)
+# maybe create a diagram of common features of particular jurisdictions?
 
 # What to regress to? Are there purposes in the EU documents? Ex ante? Researches?
