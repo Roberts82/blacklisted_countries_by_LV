@@ -433,14 +433,26 @@ jurisd_manual <- mutate(jurisd_manual, Kods..ISO.3166.1., .before = "teritorija"
 
 jurisd_manual <- left_join(jurisd_manual, iso2_valstis_LV_uk, by = c("Kods..ISO.3166.1." = "Kods (ISO-3166-1)"))
 
+# this is needed to improve data in merged_unique_is_df (by adding these values)
+jurisd_manual_with_iso <- jurisd_manual %>% 
+  filter(!Kods..ISO.3166.1. %in% c(NA))
+
+# this is needed to improve data in merged_unique_is_df (by cleaning incorrect matches in previous steps (matched to Namibia))
+jurisd_manual_no_iso <- jurisd_manual %>% 
+  filter(Kods..ISO.3166.1. %in% c(NA))
 
 tax_foundation_tax_rates <- read.csv("https://raw.githubusercontent.com/TaxFoundation/worldwide-corporate-tax-rates/master/final_data/final_data_long.csv")
 
 # from Tax Foundation dataset - additional code:
 # Antilles - AN
 
-# https://www.iso.org/obp/ui/#iso:code:3166:PF - Thaiti
+# https://www.iso.org/obp/ui/#iso:code:3166:PF - Thaiti - already in the dataset as a French Polinesya. Seems to be broader than Thaiti.
 
+# to check whether a code is already used in a dataset
+# subset(iso2_valstis_LV_uk, grepl("PF", `Kods (ISO-3166-1)`)) #used
+# subset(iso2_valstis_LV_uk, grepl("AN", `Kods (ISO-3166-1)`)) #not used
+
+# need to check the sama in the Tax Foundation dataset
 
 # next step - mutate/case_when - to add iso_2
 # then - connect with df with official names, and then add missing iso_2 manually. Where no iso_2,
