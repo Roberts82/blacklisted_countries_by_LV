@@ -459,6 +459,7 @@ tax_foundation_tax_rates <- read.csv("https://raw.githubusercontent.com/TaxFound
 # than create for the purpose of the project
 
 # the next steps:
+# maybe delete whitespaces first (https://stackoverflow.com/questions/2261079/how-can-i-trim-leading-and-trailing-white-space)
 # 1) exclude incorrect matches from merged_unique_iso_df;
 # 2) eliminate duplicates (or better no to do that until wrangle date in dfs starts/ends?);
 # 3) add to df all the missing matches (by unique_key_2 where possible, and then manually);
@@ -467,7 +468,9 @@ tax_foundation_tax_rates <- read.csv("https://raw.githubusercontent.com/TaxFound
 
 # DF FOR GANTT CHART
 
-
+ggplot() +
+  geom_line(data = tidy_proj_plan_data, aes(x = Activity, y = date), linewidth = 10) +
+  coord_flip()
 
 # will that automatically duplicate rows in case a country starts/ends more than once?
 
