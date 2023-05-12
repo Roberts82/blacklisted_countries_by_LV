@@ -18,6 +18,7 @@ library(plan)
 Some ideas for gantt chart:
 https://www.molecularecologist.com/2019/01/03/simple-gantt-charts-in-r-with-ggplot2-and-the-tidyverse/
 https://jtr13.github.io/cc19/gantt-charts.html
+https://stackoverflow.com/questions/3550341/gantt-charts-with-r
 
 Create empty df
 ```{r}
